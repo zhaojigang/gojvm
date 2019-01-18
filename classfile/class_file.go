@@ -51,7 +51,7 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 	switch self.majorVersion {
 	case 45: // jdk1.0 ~ jdk1.1，次版本号不为0
 		return
-	case 46, 47, 48, 49, 50, 51, 52: // jdk1.2 ~ jdk8，此版本号都为0
+	case 46, 47, 48, 49, 50, 51, 52, 53, 54: // jdk1.2 ~ jdk10，此版本号都为0
 		if self.minorVersion == 0 {
 			return
 		}

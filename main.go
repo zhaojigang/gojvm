@@ -5,6 +5,7 @@ import (
 	"github.com/zhaojigang/gojvm/classfile"
 	"github.com/zhaojigang/gojvm/classpath"
 	"github.com/zhaojigang/gojvm/cmdline"
+	"github.com/zhaojigang/gojvm/interpreter"
 	"github.com/zhaojigang/gojvm/rtda"
 	"strings"
 )
@@ -27,12 +28,28 @@ func startJVM(cmd *cmdline.Cmd) {
 	className := strings.Replace(cmd.Class, ".", "/", -1)
 
 	cf := loadClass(className, cp)
-	printClassInfo(cf)
+	mainMethod := getMainMethod(cf)
+	if mainMethod != nil {
+		interpreter.Interpreter(mainMethod)
+	} else {
+		fmt.Printf("Main method not found in class %s\n", cmd.Class)
+	}
+
+	//printClassInfo(cf)
 
 	//frame := rtda.NewFrame(100, 100)
 
 	//testLocalVars(frame.LocalVars())
 	//testOperandStack(frame.OperandStack())
+}
+
+func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
+	for _, m := range cf.Methods() {
+		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
+			return m
+		}
+	}
+	return nil
 }
 
 func testLocalVars(vars rtda.LocalVars) {

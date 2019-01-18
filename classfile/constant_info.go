@@ -1,5 +1,7 @@
 package classfile
 
+// tag 枚举。
+// 每一个常量项都由 tag 和 常量项内容组成
 const (
 	CONSTANT_Utf8               = 1  // UTF-8 编码的字符串
 	CONSTANT_Integer            = 3  // 整型字面量

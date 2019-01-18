@@ -1,6 +1,9 @@
 package rtda
 
-import "math"
+import (
+	"github.com/zhaojigang/gojvm/rtda/heap"
+	"math"
+)
 
 type OperandStack struct {
 	size  uint   // 操作数栈中的 slot 个数 - 1, 即栈顶元素的位置
@@ -67,12 +70,23 @@ func (self *OperandStack) PopDouble() float64 {
 
 /************************************** 引用类型 ***************************************/
 // 引用类型
-func (self *OperandStack) PushRef(ref *Object) {
+func (self *OperandStack) PushRef(ref *heap.Object) {
 	self.slots[self.size].ref = ref
 	self.size++
 }
 
-func (self *OperandStack) PopRef() *Object {
+func (self *OperandStack) PopRef() *heap.Object {
 	self.size--
 	return self.slots[self.size].ref
+}
+
+/************************************** slot ***************************************/
+func (self *OperandStack) PushSlot(slot Slot) {
+	self.slots[self.size] = slot
+	self.size++
+}
+
+func (self *OperandStack) PopSlot() Slot {
+	self.size--
+	return self.slots[self.size]
 }
