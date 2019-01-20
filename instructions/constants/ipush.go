@@ -11,7 +11,7 @@ SIPUSH: 从操作数中读取一个short，并转换成int，推入操作数栈
  */
 type BIPUSH struct{ val int8 }
 
-func (self *BIPUSH) FetchOperands(reader *base.BytecodeReader) {
+func (self *BIPUSH) FetchOperands(reader *base.ByteCodeReader) {
 	self.val = reader.ReadInt8()
 }
 
@@ -21,7 +21,7 @@ func (self *BIPUSH) Execute(frame *rtda.Frame) {
 
 type SIPUSH struct{ val int16 }
 
-func (self *SIPUSH) FetchOperands(reader *base.BytecodeReader) {
+func (self *SIPUSH) FetchOperands(reader *base.ByteCodeReader) {
 	self.val = reader.ReadInt16()
 }
 

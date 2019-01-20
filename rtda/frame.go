@@ -1,5 +1,7 @@
 package rtda
 
+import "github.com/zhaojigang/gojvm/rtda/heap"
+
 // 栈帧
 type Frame struct {
 	lower        *Frame        // 下一个栈帧
@@ -7,15 +9,17 @@ type Frame struct {
 	operandStack *OperandStack // 操作数栈
 	thread       *Thread       // 栈帧所属的线程
 	nextPC       int
+	method       *heap.Method // 栈帧所在的方法
 }
 
 // 执行方法所需的局部变量大小 maxLocals 和操作数栈深度会由编译器预先计算好，
 // 存储在 class 文件的 method_info 方法表结构中的 code 属性中
-func newFrame(thread *Thread, maxLocals, maxStack uint) *Frame {
+func newFrame(thread *Thread, method *heap.Method) *Frame {
 	return &Frame{
 		thread:       thread,
-		localVars:    newLocalVars(maxLocals),
-		operandStack: newOperandStack(maxStack),
+		method:       method,
+		localVars:    newLocalVars(method.MaxLocals()),
+		operandStack: newOperandStack(method.MaxStack()),
 	}
 }
 
@@ -39,4 +43,8 @@ func (self *Frame) Thread() *Thread {
 
 func (self *Frame) NextPC() int {
 	return self.nextPC
+}
+
+func (self *Frame) Method() *heap.Method {
+	return self.method
 }

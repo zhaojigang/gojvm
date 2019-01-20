@@ -16,6 +16,9 @@ func (self *ConstantIntegerInfo) readInfo(reader *ClassReader) {
 	self.value = int32(reader.readUint32())
 }
 
+func (self *ConstantIntegerInfo) Value() int32 {
+	return self.value
+}
 // 虚拟机规范
 // CONSTANT_Float_info {
 //    u1 tag;
@@ -27,6 +30,10 @@ type ConstantFloatInfo struct {
 
 func (self *ConstantFloatInfo) readInfo(reader *ClassReader) {
 	self.value = math.Float32frombits(reader.readUint32())
+}
+
+func (self *ConstantFloatInfo) Value() float32 {
+	return self.value
 }
 
 // 虚拟机规范
@@ -43,6 +50,9 @@ func (self *ConstantLongInfo) readInfo(reader *ClassReader) {
 	self.value = int64(reader.readUint64())
 }
 
+func (self *ConstantLongInfo) Value() int64 {
+	return self.value
+}
 // 虚拟机规范
 // CONSTANT_Double_info {
 //    u1 tag;
@@ -55,4 +65,8 @@ type ConstantDoubleInfo struct {
 
 func (self *ConstantDoubleInfo) readInfo(reader *ClassReader) {
 	self.value = math.Float64frombits(reader.readUint64())
+}
+
+func (self *ConstantDoubleInfo) Value() float64 {
+	return self.value
 }

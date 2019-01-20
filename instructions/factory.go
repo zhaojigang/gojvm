@@ -9,6 +9,7 @@ import (
 	. "github.com/zhaojigang/gojvm/instructions/conversions"
 	. "github.com/zhaojigang/gojvm/instructions/loads"
 	. "github.com/zhaojigang/gojvm/instructions/math"
+	"github.com/zhaojigang/gojvm/instructions/references"
 	. "github.com/zhaojigang/gojvm/instructions/stack"
 	. "github.com/zhaojigang/gojvm/instructions/stores"
 )
@@ -46,10 +47,10 @@ var (
 	//dload_1       = &DLOAD_1{}
 	//dload_2       = &DLOAD_2{}
 	//dload_3       = &DLOAD_3{}
-	//aload_0       = &ALOAD_0{}
-	//aload_1       = &ALOAD_1{}
-	//aload_2       = &ALOAD_2{}
-	//aload_3       = &ALOAD_3{}
+	aload_0       = &ALOAD_0{}
+	aload_1       = &ALOAD_1{}
+	aload_2       = &ALOAD_2{}
+	aload_3       = &ALOAD_3{}
 	//iaload        = &IALOAD{}
 	//laload        = &LALOAD{}
 	//faload        = &FALOAD{}
@@ -74,10 +75,10 @@ var (
 	//dstore_1      = &DSTORE_1{}
 	//dstore_2      = &DSTORE_2{}
 	//dstore_3      = &DSTORE_3{}
-	//astore_0      = &ASTORE_0{}
-	//astore_1      = &ASTORE_1{}
-	//astore_2      = &ASTORE_2{}
-	//astore_3      = &ASTORE_3{}
+	astore_0      = &ASTORE_0{}
+	astore_1      = &ASTORE_1{}
+	astore_2      = &ASTORE_2{}
+	astore_3      = &ASTORE_3{}
 	//iastore       = &IASTORE{}
 	//lastore       = &LASTORE{}
 	//fastore       = &FASTORE{}
@@ -202,12 +203,12 @@ func NewInstruction(opcode byte) base.Instruction {
 		return &BIPUSH{}
 	case 0x11:
 		return &SIPUSH{}
-	//case 0x12:
-	//	return &LDC{}
-	//case 0x13:
-	//	return &LDC_W{}
-	//case 0x14:
-	//	return &LDC2_W{}
+	case 0x12:
+		return &LDC{}
+	case 0x13:
+		return &LDC_W{}
+	case 0x14:
+		return &LDC2_W{}
 	case 0x15:
 		return &ILOAD{}
 	//case 0x16:
@@ -250,14 +251,14 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return dload_2
 	//case 0x29:
 	//	return dload_3
-	//case 0x2a:
-	//	return aload_0
-	//case 0x2b:
-	//	return aload_1
-	//case 0x2c:
-	//	return aload_2
-	//case 0x2d:
-	//	return aload_3
+	case 0x2a:
+		return aload_0
+	case 0x2b:
+		return aload_1
+	case 0x2c:
+		return aload_2
+	case 0x2d:
+		return aload_3
 	//case 0x2e:
 	//	return iaload
 	//case 0x2f:
@@ -316,14 +317,14 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return dstore_2
 	//case 0x4a:
 	//	return dstore_3
-	//case 0x4b:
-	//	return astore_0
-	//case 0x4c:
-	//	return astore_1
-	//case 0x4d:
-	//	return astore_2
-	//case 0x4e:
-	//	return astore_3
+	case 0x4b:
+		return astore_0
+	case 0x4c:
+		return astore_1
+	case 0x4d:
+		return astore_2
+	case 0x4e:
+		return astore_3
 	//case 0x4f:
 	//	return iastore
 	//case 0x50:
@@ -522,26 +523,26 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return areturn
 	//case 0xb1:
 	//	return _return
-	//case 0xb2:
-	//	return &GET_STATIC{}
-	//case 0xb3:
-	//	return &PUT_STATIC{}
-	//case 0xb4:
-	//	return &GET_FIELD{}
-	//case 0xb5:
-	//	return &PUT_FIELD{}
-	//case 0xb6:
-	//	return &INVOKE_VIRTUAL{}
-	//case 0xb7:
-	//	return &INVOKE_SPECIAL{}
+	case 0xb2:
+		return &references.GET_STATIC{}
+	case 0xb3:
+		return &references.PUT_STATIC{}
+	case 0xb4:
+		return &references.GET_FIELD{}
+	case 0xb5:
+		return &references.PUT_FIELD{}
+	case 0xb6:
+		return &references.INVOKE_VIRTUAL{}
+	case 0xb7:
+		return &references.INVOKE_SPECIAL{}
 	//case 0xb8:
 	//	return &INVOKE_STATIC{}
 	//case 0xb9:
 	//	return &INVOKE_INTERFACE{}
 	//case 0xba:
 	//	return &INVOKE_DYNAMIC{}
-	//case 0xbb:
-	//	return &NEW{}
+	case 0xbb:
+		return &references.NEW{}
 	//case 0xbc:
 	//	return &NEW_ARRAY{}
 	//case 0xbd:
@@ -550,10 +551,10 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return arraylength
 	//case 0xbf:
 	//	return athrow
-	//case 0xc0:
-	//	return &CHECK_CAST{}
-	//case 0xc1:
-	//	return &INSTANCE_OF{}
+	case 0xc0:
+		return &references.CHECK_CAST{}
+	case 0xc1:
+		return &references.INSTANCE_OF{}
 	//case 0xc2:
 	//	return monitorenter
 	//case 0xc3:

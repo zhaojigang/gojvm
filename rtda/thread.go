@@ -1,5 +1,7 @@
 package rtda
 
+import "github.com/zhaojigang/gojvm/rtda/heap"
+
 type Thread struct {
 	pc    int    // 程序计数器
 	stack *Stack // Java虚拟机栈
@@ -35,6 +37,6 @@ func (self *Thread) PC() int {
 func (self *Thread) SetPC(pc int) {
 	self.pc = pc
 }
-func (self *Thread) NewFrame(maxLocals, maxStack uint) *Frame {
-	return newFrame(self, maxLocals, maxStack)
+func (self *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(self, method)
 }

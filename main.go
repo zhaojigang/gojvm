@@ -7,6 +7,7 @@ import (
 	"github.com/zhaojigang/gojvm/cmdline"
 	"github.com/zhaojigang/gojvm/interpreter"
 	"github.com/zhaojigang/gojvm/rtda"
+	"github.com/zhaojigang/gojvm/rtda/heap"
 	"strings"
 )
 
@@ -24,13 +25,14 @@ func main() {
 func startJVM(cmd *cmdline.Cmd) {
 	//1. 构造 classpath 实例（构造三个Entry）
 	cp := classpath.Parse(cmd.XjreOption, cmd.CpOption)
+	classLoader := heap.NewClassLoader(cp)
 	// 2. 寻找并读取要查询的类
 	className := strings.Replace(cmd.Class, ".", "/", -1)
-
-	cf := loadClass(className, cp)
-	mainMethod := getMainMethod(cf)
+	mainClass := classLoader.LoadClass(className)
+	mainMethod := mainClass.GetMainMethod()
 	if mainMethod != nil {
-		interpreter.Interpreter(mainMethod)
+		// 解释执行代码
+		interpreter.Interpret(mainMethod)
 	} else {
 		fmt.Printf("Main method not found in class %s\n", cmd.Class)
 	}
@@ -42,6 +44,7 @@ func startJVM(cmd *cmdline.Cmd) {
 	//testLocalVars(frame.LocalVars())
 	//testOperandStack(frame.OperandStack())
 }
+
 
 func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
 	for _, m := range cf.Methods() {
