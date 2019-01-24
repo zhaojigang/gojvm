@@ -2,7 +2,7 @@ package heap
 
 import "github.com/zhaojigang/gojvm/classfile"
 
-// Field 与 Method 的父类
+// Field 与 Method 的父类，不是 Class 的父类
 type ClassMember struct {
 	accessFlags uint16
 	name        string

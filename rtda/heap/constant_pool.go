@@ -15,6 +15,8 @@ type ConstantPool struct {
 }
 
 // 把 classFile 中的常量池转化为运行时常量池
+// ConstantUtf8Info 和 CONSTANT_NameAndType 会被解析到其他的常量里，
+// eg. classfile.ConstantFieldrefInfo 中的 classIndex、nameAndTypeIndex -> FieldRef 中的 className、name、descriptor
 func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 	cpCount := len(cfCp)
 	consts := make([]Constant, cpCount)
@@ -36,7 +38,7 @@ func newConstantPool(class *Class, cfCp classfile.ConstantPool) *ConstantPool {
 			i++
 		case *classfile.ConstantStringInfo:
 			consts[i] = cpInfo.(*classfile.ConstantStringInfo).String()
-		// 符号引用：类、字段、方法、接口方法
+			// 符号引用：类、字段、方法、接口方法
 		case *classfile.ConstantClassInfo:
 			classInfo := cpInfo.(*classfile.ConstantClassInfo)
 			consts[i] = newClassRef(rtCp, classInfo)

@@ -16,27 +16,31 @@ func Interpret(method *heap.Method) {
 	// 每个方法的执行结束必须是return指令
 	// 此处先catch错误
 	defer catchErr(frame)
-	loop(thread, method.Code())
+	loop(thread)
 }
 
-func loop(thread *rtda.Thread, bytecode []byte) {
-	frame := thread.PopFrame()       // 弹出顶部frame
+func loop(thread *rtda.Thread) {
+	//frame := thread.PopFrame()       // 弹出顶部frame
 	reader := &base.ByteCodeReader{} // 创建字节码读取器
 
 	for {
+		frame := thread.CurrentFrame()
 		pc := frame.NextPC() // 获取 frame 中将要读取的下一字节的位置 nextPc
 		thread.SetPC(pc)     // 将该 nextPc 设置给线程 pc
 
 		// decode
-		reader.Reset(bytecode, pc)
+		reader.Reset(frame.Method().Code(), pc)
 		opCode := reader.ReadUint8()                       // 读取操作码 opCode（指令类型）
 		instruction := instructions.NewInstruction(opCode) // 根据opCode创建相应的指令
 		instruction.FetchOperands(reader)                  // 从字节码中读取操作数
 		frame.SetNextPC(reader.PC())                       // 将当前读取到的字节码的位置设置到 frame 的 nextPc 中，用于执行下一条指令
 
 		// execute
-		fmt.Printf("pc:%2d, inst:%T %v\n", pc, instruction, instruction)
+		//fmt.Printf("pc:%2d, inst:%T %v\n", pc, instruction, instruction)
 		instruction.Execute(frame) // 执行字节码指令
+		if thread.IsStackEmpty() {
+			break
+		}
 	}
 }
 

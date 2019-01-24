@@ -35,10 +35,10 @@ var (
 	iload_1       = &ILOAD_1{}
 	iload_2       = &ILOAD_2{}
 	iload_3       = &ILOAD_3{}
-	//lload_0       = &LLOAD_0{}
-	//lload_1       = &LLOAD_1{}
-	//lload_2       = &LLOAD_2{}
-	//lload_3       = &LLOAD_3{}
+	lload_0       = &LLOAD_0{}
+	lload_1       = &LLOAD_1{}
+	lload_2       = &LLOAD_2{}
+	lload_3       = &LLOAD_3{}
 	//fload_0       = &FLOAD_0{}
 	//fload_1       = &FLOAD_1{}
 	//fload_2       = &FLOAD_2{}
@@ -97,13 +97,13 @@ var (
 	//dup2_x2       = &DUP2_X2{}
 	swap          = &SWAP{}
 	iadd          = &IADD{}
-	//ladd          = &LADD{}
+	ladd          = &LADD{}
 	//fadd          = &FADD{}
 	//dadd          = &DADD{}
-	//isub          = &ISUB{}
-	//lsub          = &LSUB{}
-	//fsub          = &FSUB{}
-	//dsub          = &DSUB{}
+	isub          = &ISUB{}
+	lsub          = &LSUB{}
+	fsub          = &FSUB{}
+	dsub          = &DSUB{}
 	//imul          = &IMUL{}
 	//lmul          = &LMUL{}
 	//fmul          = &FMUL{}
@@ -152,12 +152,12 @@ var (
 	fcmpg         = &FCMPG{}
 	//dcmpl         = &DCMPL{}
 	//dcmpg         = &DCMPG{}
-	//ireturn       = &IRETURN{}
-	//lreturn       = &LRETURN{}
-	//freturn       = &FRETURN{}
-	//dreturn       = &DRETURN{}
-	//areturn       = &ARETURN{}
-	//_return       = &RETURN{}
+	ireturn       = &IRETURN{}
+	lreturn       = &LRETURN{}
+	freturn       = &FRETURN{}
+	dreturn       = &DRETURN{}
+	areturn       = &ARETURN{}
+	_return       = &RETURN{}
 	//arraylength   = &ARRAY_LENGTH{}
 	//athrow        = &ATHROW{}
 	//monitorenter  = &MONITOR_ENTER{}
@@ -227,14 +227,14 @@ func NewInstruction(opcode byte) base.Instruction {
 		return iload_2
 	case 0x1d:
 		return iload_3
-	//case 0x1e:
-	//	return lload_0
-	//case 0x1f:
-	//	return lload_1
-	//case 0x20:
-	//	return lload_2
-	//case 0x21:
-	//	return lload_3
+	case 0x1e:
+		return lload_0
+	case 0x1f:
+		return lload_1
+	case 0x20:
+		return lload_2
+	case 0x21:
+		return lload_3
 	//case 0x22:
 	//	return fload_0
 	//case 0x23:
@@ -361,20 +361,20 @@ func NewInstruction(opcode byte) base.Instruction {
 		return swap
 	case 0x60:
 		return iadd
-	//case 0x61:
-	//	return ladd
+	case 0x61:
+		return ladd
 	//case 0x62:
 	//	return fadd
 	//case 0x63:
 	//	return dadd
-	//case 0x64:
-	//	return isub
-	//case 0x65:
-	//	return lsub
-	//case 0x66:
-	//	return fsub
-	//case 0x67:
-	//	return dsub
+	case 0x64:
+		return isub
+	case 0x65:
+		return lsub
+	case 0x66:
+		return fsub
+	case 0x67:
+		return dsub
 	//case 0x68:
 	//	return imul
 	//case 0x69:
@@ -511,18 +511,18 @@ func NewInstruction(opcode byte) base.Instruction {
 	//	return &TABLE_SWITCH{}
 	//case 0xab:
 	//	return &LOOKUP_SWITCH{}
-	//case 0xac:
-	//	return ireturn
-	//case 0xad:
-	//	return lreturn
-	//case 0xae:
-	//	return freturn
-	//case 0xaf:
-	//	return dreturn
-	//case 0xb0:
-	//	return areturn
-	//case 0xb1:
-	//	return _return
+	case 0xac:
+		return ireturn
+	case 0xad:
+		return lreturn
+	case 0xae:
+		return freturn
+	case 0xaf:
+		return dreturn
+	case 0xb0:
+		return areturn
+	case 0xb1:
+		return _return
 	case 0xb2:
 		return &references.GET_STATIC{}
 	case 0xb3:
@@ -535,10 +535,10 @@ func NewInstruction(opcode byte) base.Instruction {
 		return &references.INVOKE_VIRTUAL{}
 	case 0xb7:
 		return &references.INVOKE_SPECIAL{}
-	//case 0xb8:
-	//	return &INVOKE_STATIC{}
+	case 0xb8:
+		return &references.INVOKE_STATIC{}
 	//case 0xb9:
-	//	return &INVOKE_INTERFACE{}
+	//	return &references.INVOKE_INTERFACE{}
 	//case 0xba:
 	//	return &INVOKE_DYNAMIC{}
 	case 0xbb:

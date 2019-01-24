@@ -47,8 +47,8 @@ func (self *ClassLoader) readClass(name string) ([]byte, classpath.Entry) {
 func (self *ClassLoader) defineClass(data []byte) *Class {
 	class := parseClass(data)
 	class.loader = self
-	resolveSuperClass(class)
-	resolveInterfaces(class)
+	resolveSuperClass(class)          // 递归加载父类
+	resolveInterfaces(class)          // 递归加载接口类
 	self.classMap[class.name] = class // 放入已加载列表
 	return class
 }

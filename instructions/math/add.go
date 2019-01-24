@@ -11,6 +11,7 @@ add指令：从操作数栈的栈顶获取两个变量，之后进行三种之�
 */
 
 type IADD struct{ base.NoOperandsInstruction }
+type LADD struct{ base.NoOperandsInstruction }
 
 func (self *IADD) Execute(frame *rtda.Frame) {
 	stack := frame.OperandStack()
@@ -18,4 +19,12 @@ func (self *IADD) Execute(frame *rtda.Frame) {
 	v1 := stack.PopInt()
 	result := v1 + v2
 	stack.PushInt(result)
+}
+
+func (self *LADD) Execute(frame *rtda.Frame) {
+	stack := frame.OperandStack()
+	v2 := stack.PopLong()
+	v1 := stack.PopLong()
+	result := v1 + v2
+	stack.PushLong(result)
 }
